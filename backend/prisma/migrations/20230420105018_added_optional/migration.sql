@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `User` MODIFY `image` VARCHAR(191) NULL,
+    MODIFY `pdf` LONGBLOB NULL;
