@@ -73,6 +73,9 @@ export class UserService {
     if (!userExists) {
       throw new UserNotFoundError(UserErrorMessages.USER_NOT_FOUD);
     }
+    if (userExists.image === null) {
+      throw new UserWrongFormatError(UserErrorMessages.WRONG_PHOTO_FORMAT);
+    }
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage();
     page.drawText(userExists.firstName + ' ' + userExists.lastName);
