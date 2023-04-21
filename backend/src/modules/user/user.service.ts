@@ -43,15 +43,27 @@ export class UserService {
   }
 
   async delete(userId: string): Promise<User> {
+    const userExists = await this.userRepository.findById(userId);
+    if (!userExists) {
+      throw new UserNotFoundError(UserErrorMessages.USER_NOT_FOUD);
+    }
     return await this.userRepository.delete(userId);
   }
 
   async updatePut(userId: string, data: UserPutDTO): Promise<User> {
+    const userExists = await this.userRepository.findById(userId);
+    if (!userExists) {
+      throw new UserNotFoundError(UserErrorMessages.USER_NOT_FOUD);
+    }
     const mappedData = this.userMapper.fromPutDtoToUserUpdateInput(data);
     return await this.userRepository.update(userId, mappedData);
   }
 
   async updatePatch(userId: string, data: UserPatchDTO): Promise<User> {
+    const userExists = await this.userRepository.findById(userId);
+    if (!userExists) {
+      throw new UserNotFoundError(UserErrorMessages.USER_NOT_FOUD);
+    }
     const mappedData = this.userMapper.fromPatchDtoToUpdateInput(data);
     return await this.userRepository.update(userId, mappedData);
   }
@@ -69,7 +81,7 @@ export class UserService {
   }
 
   async genPdf(email: string) {
-    const userExists = await this.findByEmail(email);
+    const userExists = await this.userRepository.findByEmail(email);
     if (!userExists) {
       throw new UserNotFoundError(UserErrorMessages.USER_NOT_FOUD);
     }
